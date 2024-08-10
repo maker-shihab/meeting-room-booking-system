@@ -1,5 +1,6 @@
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
+import router from "./app/routes";
 
 const app: Application = express();
 
@@ -13,6 +14,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Router for main api
-// app.use("/api");
+app.use("/api", router);
 
 export default app;
