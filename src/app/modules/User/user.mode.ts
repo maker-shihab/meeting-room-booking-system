@@ -1,4 +1,6 @@
+import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
+import config from "../../config";
 import { TUser, UserModel } from "./user.interface";
 
 const userSchema = new Schema<TUser>(
@@ -57,9 +59,26 @@ userSchema.pre("findOne", function (next) {
   next();
 });
 
-userSchema.statics.isUserEsists = async function (id: string) {
-  const existingUser = await this.findById(id);
+userSchema.statics.isUserEsists = async function (email: string) {
+  const existingUser = await this.findById(email);
   return !!existingUser;
 };
+
+userSchema.statics.isPasswordMatched = async function (
+  givenPassword: string,
+  savePassword: string,
+): Promise<boolean> {
+  return await bcrypt.compare(givenPassword, savePassword);
+};
+
+userSchema.pre("save", async function (next) {
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round),
+  );
+
+  next();
+});
 
 export const User = model<TUser, UserModel>("User", userSchema);
