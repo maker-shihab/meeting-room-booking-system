@@ -8,10 +8,15 @@ const roomValidationSchema = z.object({
     roomNo: z.number({
       required_error: "Room number is required!",
     }),
+    floorNo: z.number({
+      required_error: "Floor number is required!",
+    }),
     capacity: z.number(),
     pricePerSlot: z.number(),
-    amenities: z.number(),
-    isDeleted: z.boolean(),
+    amenities: z.array(z.string(), {
+      required_error: "At least one amenity is required!",
+    }),
+    isDeleted: z.boolean().optional(),
   }),
 });
 

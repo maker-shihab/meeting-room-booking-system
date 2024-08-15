@@ -40,6 +40,7 @@ const userSchema = new Schema<TUser>(
     isDeleted: {
       type: Boolean,
       default: false,
+      select: false,
     },
   },
   {
@@ -59,9 +60,11 @@ userSchema.pre("findOne", function (next) {
   next();
 });
 
-userSchema.statics.isUserEsists = async function (email: string) {
-  const existingUser = await this.findById(email);
-  return !!existingUser;
+userSchema.statics.isUserExist = async function (
+  email: string,
+): Promise<boolean> {
+  const existingUser = await this.findOne({ email }).select("+password");
+  return existingUser;
 };
 
 userSchema.statics.isPasswordMatched = async function (

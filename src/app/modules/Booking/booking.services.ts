@@ -11,7 +11,13 @@ const getAllBookingsFromDB = async () => {
   return result;
 };
 
+const getMyBookingIntoDB = async (id: string) => {
+  const result = await Booking.find({ id });
+  return result;
+};
+
 export const BookingService = {
   createBooking,
   getAllBookingsFromDB,
+  getMyBookingIntoDB,
 };

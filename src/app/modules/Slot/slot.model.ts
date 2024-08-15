@@ -7,15 +7,15 @@ const slotSchema = new Schema<TSlot>({
     ref: "Room",
   },
   date: {
-    type: Date,
+    type: String,
     required: [true, "Date is required"],
   },
   startTime: {
-    type: Date,
+    type: String,
     required: [true, "Start Time is required"],
   },
   endTime: {
-    type: Date,
+    type: String,
     required: [true, "End Time is required"],
   },
   isBooked: {
@@ -23,5 +23,9 @@ const slotSchema = new Schema<TSlot>({
     default: false,
   },
 });
+
+slotSchema.statics.isSlotByCustomId = async function (id: string) {
+  return await Slot.findById(id);
+};
 
 export const Slot = model<TSlot>("Slot", slotSchema);

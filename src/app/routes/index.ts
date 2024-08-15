@@ -1,21 +1,21 @@
 import express from "express";
+import { AuthRouter } from "../modules/Auth/auth.router";
 import { RoomRouter } from "../modules/Room/room.route";
 import { SlotRouter } from "../modules/Slot/slot.route";
-import { UserRouter } from "../modules/User/user.router";
 
 const router = express.Router();
 
 const moduleRouters = [
   {
     path: "/auth",
-    route: UserRouter,
+    route: AuthRouter,
   },
   {
-    path: "/room",
+    path: "/rooms",
     route: RoomRouter,
   },
   {
-    path: "/slot",
+    path: "/slots",
     route: SlotRouter,
   },
 ];

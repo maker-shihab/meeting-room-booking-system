@@ -10,6 +10,10 @@ const roomSchema = new Schema<TRoom>({
     type: Number,
     required: [true, "Room number is required"],
   },
+  floorNo: {
+    type: Number,
+    required: [true, "Floor number is required"], // Added this field
+  },
   capacity: {
     type: Number,
     required: [true, "Capacity is required"],
@@ -19,7 +23,7 @@ const roomSchema = new Schema<TRoom>({
     required: [true, "Price per slot is required"],
   },
   amenities: {
-    type: Number,
+    type: [String],
     required: [true, "Amendment is required"],
   },
   isDeleted: {
