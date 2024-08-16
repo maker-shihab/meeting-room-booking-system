@@ -19,7 +19,7 @@ const bookingSchema = new Schema<TBooking>(
       required: true,
     },
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     totalAmount: {

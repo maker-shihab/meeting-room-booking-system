@@ -1,4 +1,5 @@
 import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { BookingService } from "./booking.services";
@@ -25,8 +26,12 @@ const getAllBookings = catchAsync(async (req, res) => {
 });
 
 const getMyBooking = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await BookingService.getMyBookingIntoDB(id);
+  const token = req.headers.authorization;
+  if (!token) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Missing token");
+  }
+
+  const result = await BookingService.getMyBookingIntoDB(token);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -35,7 +40,9 @@ const getMyBooking = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 export const BookingController = {
   createBooking,
   getAllBookings,
+  getMyBooking,
 };

@@ -2,13 +2,13 @@ import { z } from "zod";
 
 const bookingValidationSchema = z.object({
   body: z.object({
-    roomId: z.string().uuid(),
-    slots: z.array(z.string().uuid()).min(1),
-    user: z.string().uuid(),
-    date: z.date(),
-    totalAmount: z.number().positive(),
-    isConfirmed: z.enum(["confirmed", "unconfirmed", "canceled"]),
-    isDeleted: z.boolean(),
+    room: z.string(),
+    slots: z.array(z.string()).min(1),
+    user: z.string(),
+    date: z.string(),
+    totalAmount: z.number().positive().optional(),
+    isConfirmed: z.enum(["confirmed", "unconfirmed", "canceled"]).optional(),
+    isDeleted: z.boolean().optional(),
   }),
 });
 

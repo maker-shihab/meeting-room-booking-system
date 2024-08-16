@@ -8,9 +8,17 @@ import catchAsync from "../utils/catchAsync";
 
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req, res, next) => {
-    const token = req.headers.authorization;
-    if (!token) {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) {
       throw new AppError(httpStatus.UNAUTHORIZED, "Your are not authorized!");
+    }
+
+    // Extracting token from the authorization header
+    const token = authorizationHeader.split(" ")[1];
+
+    // Checking if token is valid or not
+    if (!token) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Invalid token!");
     }
 
     // Checking token validation
@@ -18,28 +26,27 @@ const auth = (...requiredRoles: TUserRole[]) => {
       token,
       config.jwt_access_secret as string,
     ) as JwtPayload;
-
+    console.log(decoded);
     const { role, userId } = decoded;
 
     const user = await User.findById(userId);
     if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, "This user is not found !");
+      throw new AppError(httpStatus.NOT_FOUND, "User not found!");
     }
 
     const isDeleted = user?.isDeleted;
 
     if (isDeleted) {
-      throw new AppError(httpStatus.FORBIDDEN, "This user is deleted !");
+      throw new AppError(httpStatus.FORBIDDEN, "User is deleted !");
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(
-        httpStatus.UNAUTHORIZED,
-        "You are not authorized  hi!",
-      );
+      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized");
     }
 
     req.user = decoded as JwtPayload;
     next();
   });
 };
+
+export default auth;

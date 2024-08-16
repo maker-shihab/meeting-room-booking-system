@@ -8,32 +8,38 @@ import { ILoginUser } from "./auth.interface";
 const loginUser = async (payload: ILoginUser) => {
   const { email, password } = payload;
 
-  const userExists = await User.isUserExist(email);
-  if (!userExists) {
+  const user = await User.isUserExist(email);
+  if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User does not exist");
   }
 
+  const isDeleted = user?.isDeleted;
+  if (isDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, "This user is deleted!");
+  }
+
   if (
-    userExists.password &&
-    !(await User.isPasswordMatched(password, userExists.password))
+    user.password &&
+    !(await User.isPasswordMatched(password, user.password))
   ) {
     throw new AppError(httpStatus.UNAUTHORIZED, "Invalid credentials");
   }
 
   const jwtPayload = {
-    email: userExists.email,
-    role: userExists.role,
+    userId: user._id,
+    role: user.role,
   };
 
   const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: "10d",
   });
 
-  let userData = await User.findOne({ email });
+  // For response password
+  user.password = "";
 
   return {
     token: `Bearer ${accessToken}`,
-    userData,
+    user,
   };
 };
 
