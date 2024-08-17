@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import config from "../../config";
+import config from "../config";
 import AppError from "../errors/AppError";
 import { TUserRole } from "../modules/User/user.interface";
 import { User } from "../modules/User/user.model";
@@ -26,7 +26,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
       token,
       config.jwt_access_secret as string,
     ) as JwtPayload;
-    console.log(decoded);
+
     const { role, userId } = decoded;
 
     const user = await User.findById(userId);

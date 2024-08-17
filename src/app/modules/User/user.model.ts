@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
-import config from "../../../config";
+import config from "../../config";
 import { TUser, UserModel } from "./user.interface";
 
 const userSchema = new Schema<TUser>(
@@ -50,15 +50,15 @@ const userSchema = new Schema<TUser>(
   },
 );
 
-userSchema.pre("find", function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
+// userSchema.pre("find", function (next) {
+//   this.find({ isDeleted: { $ne: true } });
+//   next();
+// });
 
-userSchema.pre("findOne", function (next) {
-  this.findOne({ isDeleted: { $ne: true } });
-  next();
-});
+// userSchema.pre("findOne", function (next) {
+//   this.findOne({ isDeleted: { $ne: true } });
+//   next();
+// });
 
 userSchema.statics.isUserExist = async function (
   email: string,

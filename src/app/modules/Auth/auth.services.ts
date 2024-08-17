@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import jwt from "jsonwebtoken";
-import config from "../../../config";
+import config from "../../config";
 import AppError from "../../errors/AppError";
 import { User } from "../User/user.model";
 import { ILoginUser } from "./auth.interface";

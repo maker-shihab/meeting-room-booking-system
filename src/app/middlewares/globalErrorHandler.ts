@@ -1,11 +1,13 @@
 import { ErrorRequestHandler } from "express";
+import httpStatus from "http-status";
 import { ZodError } from "zod";
-import config from "../../config";
+import config from "../config";
 import AppError from "../errors/AppError";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
 import handleValidationError from "../errors/handleValidationError";
 import handleZodError from "../errors/handleZodError";
+import NoDataFoundError from "../errors/NoDataFoundError";
 import { TErrorSources } from "../interface/error";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -39,6 +41,13 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
+  } else if (err instanceof NoDataFoundError) {
+    return res.status(httpStatus.NOT_FOUND).json({
+      success: false,
+      statusCode: httpStatus.NOT_FOUND,
+      message: err.message,
+      data: [],
+    });
   } else if (err instanceof AppError) {
     statusCode = err?.statusCode;
     message = err.message;
