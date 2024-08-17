@@ -49,6 +49,10 @@ A basic backend for an Meeting Room Booking System project, built with TypeScrip
 
 ## Routes:
 
+### Root Url:
+
+`https://meeting-room-booking-system-puce.vercel.app/
+
 ### User Sign Up:
 
 - _*Route:*_ `/api/auth/signup` (POST)
@@ -240,7 +244,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmMwN
 
 4. **Base URL:**
 
-   https://mini-ec-ommerce.vercel.app
+   https://meeting-room-booking-system-puce.vercel.app/
 
 ## Conclusion
 
