@@ -51,7 +51,7 @@ A basic backend for an Meeting Room Booking System project, built with TypeScrip
 
 ### Root Url:
 
-`https://meeting-room-booking-system-puce.vercel.app/
+`https://meeting-room-booking-system-puce.vercel.app/`
 
 ### User Sign Up:
 
